@@ -1,46 +1,65 @@
-import { Box } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, Grid, Snackbar, TextField } from '@mui/material'
 import type { NextPage } from 'next'
 import { Professor } from '../src/@types/professor'
 import Lista from '../src/components/Lista/Lista'
+import { useIndex } from '../src/hooks/pages/useIndex'
 
 const Home: NextPage = () => {
+  const {listaProfessores,
+    nome,
+    setNome,
+    email,
+    setEmail,
+    professorSelecionado,    
+    setProfessorSelecionado,
+    marcarAula,
+    mensagem,
+    setMensagem
+    } = useIndex() 
 
-const professores: Professor[] =[
-  {
-        id: 1,
-        nome: "Gabriel Pio DEV",
-        foto: "https://github.com/GabrielPioDEV.png",
-        descricao: "Jovem Aprendiz no ramo de Programação",
-        valor_hora:800
-
-  }, 
-  {
-    id: 2,
-    nome: "professor2",
-    foto: "https://github.com/lucas.png",
-    descricao: "descricao do professor2",
-    valor_hora:200
-
-},{
-  id: 3,
-  nome: "professor3",
-  foto: "https://github.com/lucas.png",
-  descricao: "descricao do professor3",
-  valor_hora:300
-
-} ,{
-        id: 4,
-        nome: "professor4",
-        foto: "https://github.com/lucas.png",
-        descricao: "descricao do professor4",
-        valor_hora:400
-
-  }   
-]  
   return (
-    <Box sx={ {backgroundColor: 'secondary.main'}}>
-      <Lista professores={professores} ></Lista>
-    </Box>
+     <div>
+        <Box sx={ {backgroundColor: 'secondary.main'}}>
+      <Lista 
+      professores={listaProfessores}
+      onSelect={(professor)=>setProfessorSelecionado(professor)}
+      ></Lista>
+       </Box>
+
+       <Dialog onClose={() => setProfessorSelecionado(null)} open={professorSelecionado !== null} fullWidth PaperProps={{sx:{p:5}}}>
+       <Grid container spacing={2}> 
+        <Grid item xs={12}>
+           <TextField 
+             label="Digite o nome"
+             type="text"
+              fullWidth
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+           /> 
+        </Grid>
+        <Grid item xs={12}>
+           <TextField 
+             label="Digite o email"
+             type="text"
+             fullWidth
+             value={email}
+              onChange={(e) => setEmail(e.target.value)}
+           /> 
+        </Grid>
+       </Grid>
+      
+      <DialogActions sx={{mt:5}}>
+         <Button onClick={() => setProfessorSelecionado(null)}>Cancelar</Button>
+         <Button onClick={() => marcarAula()}>Marcar</Button>
+      </DialogActions>
+      </Dialog>
+
+      <Snackbar message={mensagem} 
+      open={mensagem.length >  0 }
+      autoHideDuration={2500}
+      onClose={() => setMensagem('')}
+      />
+     </div>
   )   
 }
 
