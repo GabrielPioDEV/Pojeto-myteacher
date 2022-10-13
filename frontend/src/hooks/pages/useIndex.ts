@@ -23,7 +23,7 @@ export function useIndex(){
     function marcarAula(){
         if(professorSelecionado !== null){
           if (validarDadosAula()){
-              ApiService.post('/professores'+ professorSelecionado.id+'/aulas',{
+              ApiService.post('/professores/'+ professorSelecionado.id+'/aulas',{
                 nome,
                 email
               }).then(() => {
